@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil — DernSupport</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <h1 class="logo">Dern<span>Support</span></h1>
+        <nav class="nav">
+            <a href="index.html">Bosh sahifa</a>
+            <a href="services.html">Xizmatlar</a>
+            <a href="about.html">Biz haqimizda</a>
+            <a href="contact.html">Aloqa</a>
+            <a href="order.html" class="btn btn-primary">Buyurtma</a>
+            <button onclick="logout()" class="btn btn-outline">Chiqish</button>
+        </nav>
+    </div>
+</header>
+
+<main class="profile-main">
+    <div class="container">
+        <h2>Foydalanuvchi Profili</h2>
+        <p id="message"></p>
+
+        <div id="profileInfo" class="profile-info">
+            <div class="profile-card">
+                <h3>Shaxsiy Ma'lumotlar</h3>
+                <p><strong>Ism:</strong> <span id="name">Yuklanmoqda...</span></p>
+                <p><strong>Email:</strong> <span id="email">Yuklanmoqda...</span></p>
+                <p><strong>Tug'ilgan sana:</strong> <span id="birthdate">Yuklanmoqda...</span></p>
+                <p><strong>Ro'yxatdan o'tgan sana:</strong> <span id="date">Yuklanmoqda...</span></p>
+                <p><strong>Rol:</strong> <span id="role">Yuklanmoqda...</span></p>
+
+                <button id="editBtn" class="btn btn-primary">Tahrirlash</button>
+            </div>
+        </div>
+
+        <form id="editForm" class="edit-form" style="display: none;">
+            <div class="profile-card">
+                <h3>Ma'lumotlarni Tahrirlash</h3>
+
+                <label for="editName">Ism:</label>
+                <input type="text" id="editName" required>
+
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" required>
+
+                <label for="editPassword">Yangi parol (ixtiyoriy):</label>
+                <input type="password" id="editPassword" placeholder="Agar o'zgartirmoqchi bo'lsangiz, kiriting">
+
+                <label for="editBirthdate">Tug'ilgan sana:</label>
+                <input type="date" id="editBirthdate" required>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                    <button type="button" id="cancelBtn" class="btn btn-secondary">Bekor qilish</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>&copy; 2025 DernSupport.uz — Barcha huquqlar himoyalangan.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const email = localStorage.getItem('userEmail');
+        const password = localStorage.getItem('userPassword');
+
+        console.log('Profil log: Email:', email || 'Yo\'q');
+        console.log('Profil log: Parol:', password ? 'Mavjud' : 'Yo\'q');
+
+        if (!email || !password) {
+            console.log('Profil log: Email yoki parol yo\'q, login sahifasiga yo\'naltirilmoqda');
+            document.getElementById('message').textContent = 'Iltimos, tizimga kiring';
+            document.getElementById('message').style.color = 'red';
+            setTimeout(() => window.location.href = 'login.html', 2000);
+            return;
+        }
+
+        const profileInfo = document.getElementById('profileInfo');
+        const editForm = document.getElementById('editForm');
+        const editBtn = document.getElementById('editBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        async function loadProfile() {
+            try {
+                console.log('Profil log: /profile so\'rovi yuborilmoqda');
+                const response = await fetch('/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Email': email,
+                        'Password': password,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Profil log: Javob statusi:', response.status);
+
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({ message: 'Server javobi noto\'g\'ri' }));
+                    console.log('Profil error:', error);
+                    throw new Error(error.message || 'Ma\'lumotlarni yuklab bo\'lmadi');
+                }
+
+                const user = await response.json();
+                console.log('Profil log: Foydalanuvchi ma\'lumotlari:', user);
+
+                document.getElementById('name').textContent = user.name || 'Noma\'lum';
+                document.getElementById('email').textContent = user.email || 'Noma\'lum';
+                document.getElementById('birthdate').textContent = user.birthdate || 'Noma\'lum';
+                document.getElementById('date').textContent = user.date ? new Date(user.date).toLocaleDateString('uz-UZ') : 'Noma\'lum';
+                document.getElementById('role').textContent = user.role || 'user';
+
+                document.getElementById('editName').value = user.name || '';
+                document.getElementById('editEmail').value = user.email || '';
+                document.getElementById('editBirthdate').value = user.birthdate || '';
+
+            } catch (err) {
+                console.log('Profil error (catch):', err.message);
+                document.getElementById('message').textContent = 'Xato: ' + err.message;
+                document.getElementById('message').style.color = 'red';
+            }
+        }
+
+        await loadProfile();
+
+        editBtn.addEventListener('click', () => {
+            profileInfo.style.display = 'none';
+            editForm.style.display = 'block';
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            profileInfo.style.display = 'block';
+            editForm.style.display = 'none';
+        });
+
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('editName').value;
+            const newEmail = document.getElementById('editEmail').value;
+            const newPassword = document.getElementById('editPassword').value;
+            const birthdate = document.getElementById('editBirthdate').value;
+
+            console.log('Profil log: Tahrirlash so\'rovi:', { name, email: newEmail, password: newPassword ? '****' : 'Bo\'sh', birthdate });
+
+            try {
+                const response = await fetch('/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Email': email,
+                        'Password': password,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email: newEmail, password: newPassword, birthdate })
+                });
+
+                console.log('Profil log: Tahrirlash javobi:', response.status);
+
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({ message: 'Server javobi noto\'g\'ri' }));
+                    console.log('Profil error:', error);
+                    throw new Error(error.message || 'Tahrirlash muvaffaqiyatsiz');
+                }
+
+                const result = await response.json();
+                console.log('Profil log: Tahrirlash muvaffaqiyatli:', result);
+
+                if (newEmail !== email) {
+                    localStorage.setItem('userEmail', newEmail);
+                }
+
+                if (newPassword) {
+                    localStorage.setItem('userPassword', newPassword);
+                }
+
+                document.getElementById('message').textContent = 'Ma\'lumotlar saqlandi!';
+                document.getElementById('message').style.color = 'green';
+
+                await loadProfile();
+
+                profileInfo.style.display = 'block';
+                editForm.style.display = 'none';
+
+            } catch (err) {
+                console.log('Profil error (catch):', err.message);
+                document.getElementById('message').textContent = 'Xato: ' + err.message;
+                document.getElementById('message').style.color = 'red';
+            }
+        });
+    });
+
+    function logout() {
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userPassword');
+        localStorage.removeItem('userRole');
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

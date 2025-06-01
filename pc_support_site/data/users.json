@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Admin",
+    "email": "admin@gmail.com",
+    "password": "Salom123!",
+    "birthdate": "1990-01-01",
+    "date": "2025-05-28",
+    "role": "admin"
+  },
+  {
+    "name": "Iskandar Raxmonov",
+    "email": "rahmonoviskandar937@gmail.com",
+    "password": "I46425326i!",
+    "birthdate": "2025-05-30",
+    "date": "2025-05-31",
+    "role": "user"
+  }
+]

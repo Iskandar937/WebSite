@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Buyurtma — TechFix</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="logo">Dern<span>Support</span></h1>
+        <nav class="nav">
+            <a href="index.html">Bosh sahifa</a>
+            <a href="services.html">Xizmatlar</a>
+            <a href="about.html">Biz haqimizda</a>
+            <a href="contact.html">Aloqa</a>
+            <a href="order.html" class="btn btn-primary">Buyurtma</a>
+        </nav>
+    </div>
+</header>
+
+<section class="order-section">
+    <div class="container">
+        <h3>Buyurtma berish</h3>
+        <form class="order-form" action="/order" method="POST" novalidate>
+
+            <label for="name">Ismingiz</label>
+            <input type="text" id="name" name="name" placeholder="Ismingizni kiriting" required />
+
+            <label for="phone">Telefon raqamingiz</label>
+            <input type="tel" id="phone" name="phone" placeholder="+998 90 123 45 67" required pattern="^\+998\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$" />
+
+            <label for="service">Xizmat turi</label>
+            <select id="service" name="service" required>
+                <option value="" disabled selected>Tanlang</option>
+                <option value="diagnostika">Tezkor Diagnostika</option>
+                <option value="virus_tozalash">Viruslarni yo‘q qilish</option>
+                <option value="ekran_almashtirish">Ekran va klaviatura almashtirish</option>
+                <option value="ssd_ochirish">SSD/HDD o‘rnatish</option>
+                <option value="windows_ornatish">Windows o‘rnatish</option>
+                <option value="tozalash">Tozalash va sovutish</option>
+            </select>
+
+            <label for="message">Qo‘shimcha ma’lumot</label>
+            <textarea id="message" name="message" rows="4" placeholder="Qo‘shimcha ma’lumot yoki savollar" ></textarea>
+
+            <button type="submit" class="btn btn-primary">Buyurtma berish</button>
+        </form>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>&copy; 2025 DernSupport.uz — Barcha huquqlar himoyalangan.</p>
+    </div>
+</footer>
+
+</body>
+</html>

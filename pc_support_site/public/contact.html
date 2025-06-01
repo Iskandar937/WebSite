@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aloqa — TechFix</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="logo">Dern<span>Support</span></h1>
+        <nav class="nav">
+            <a href="index.html">Bosh sahifa</a>
+            <a href="services.html">Xizmatlar</a>
+            <a href="about.html">Biz haqimizda</a>
+            <a href="contact.html">Aloqa</a>
+            <a href="order.html" class="btn btn-primary">Buyurtma</a>
+        </nav>
+    </div>
+</header>
+
+<section class="contact-section">
+    <div class="container">
+        <h3>Biz bilan bog‘laning</h3>
+        <div class="contact-info">
+            <div>
+                <h4>Manzilimiz</h4>
+                <p>Toshkent sh., Shayxontohur tumani, Amir Temur ko'chasi, 45</p>
+            </div>
+            <div>
+                <h4>Telefon</h4>
+                <p><a href="tel:+998996325416">+998 99 632 54 16</a></p>
+            </div>
+            <div>
+                <h4>Email</h4>
+                <p><a href="mailto:info@dernsupport.uz">info@dernsupport.uz</a></p>
+            </div>
+
+
+        </div>
+        <h2 >Joylashuvimiz xaritada:</h2>
+        <iframe
+                class="map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23950.35337761082!2d69.24158088505703!3d41.338475021906135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b1f6036b4a7%3A0x69ef057a26240c0c!2sPDP%20University!5e0!3m2!1sen!2s!4v1716557571333!5m2!1sen!2s"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+        <form class="contact-form" action="/contact" method="POST" novalidate>
+
+            <label for="name">Ismingiz</label>
+            <input type="text" id="name" name="name" placeholder="Ismingizni kiriting" required />
+
+            <label for="email">Email manzilingiz</label>
+            <input type="email" id="email" name="email" placeholder="Emailingizni kiriting" required />
+
+            <label for="message">Xabar matni</label>
+            <textarea id="message" name="message" rows="5" placeholder="Xabaringizni yozing" required></textarea>
+
+            <button type="submit" class="btn btn-primary">Yuborish</button>
+        </form>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>&copy; 2025 DernSupport.uz — Barcha huquqlar himoyalangan.</p>
+    </div>
+</footer>
+
+</body>
+</html>

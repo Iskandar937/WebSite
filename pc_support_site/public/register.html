@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ro‘yxatdan o‘tish</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+        }
+
+        small {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<form id="registerForm" action="/register" method="POST" onsubmit="return validateForm()">
+    <h2>Ro‘yxatdan o‘tish</h2>
+
+    <label for="name">Ismingiz</label>
+    <input type="text" name="name" id="name" required />
+
+    <label for="email">Email manzilingiz</label>
+    <input type="email" name="email" id="email" required />
+    <small id="emailError">Iltimos, faqat @gmail.com domenli email kiriting.</small>
+
+    <label for="password">Parol</label>
+    <input type="password" name="password" id="password" required />
+    <small id="passwordError">
+        Parol kamida 8 belgidan iborat, katta harf, kichik harf, raqam va maxsus belgi bo‘lishi kerak.
+    </small>
+
+    <label for="confirmPassword">Parolni tasdiqlang</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" required />
+    <small id="confirmPasswordError">Parollar bir xil emas!</small>
+
+    <label for="birthdate">Tug‘ilgan sana</label>
+    <input type="date" name="birthdate" id="birthdate" required />
+
+    <button type="submit">Ro‘yxatdan o‘tish</button>
+</form>
+
+<script>
+    function validateForm() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        const emailError = document.getElementById("emailError");
+        const passwordError = document.getElementById("passwordError");
+        const confirmPasswordError = document.getElementById("confirmPasswordError");
+
+        let valid = true;
+
+        if (!email.endsWith("@gmail.com")) {
+            emailError.style.display = "block";
+            valid = false;
+        } else {
+            emailError.style.display = "none";
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            passwordError.style.display = "block";
+            valid = false;
+        } else {
+            passwordError.style.display = "none";
+        }
+
+        if (password !== confirmPassword) {
+            confirmPasswordError.style.display = "block";
+            valid = false;
+        } else {
+            confirmPasswordError.style.display = "none";
+        }
+
+        return valid;
+    }
+</script>
+
+</body>
+</html>

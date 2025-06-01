@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Paneli</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background-color: #1e2a38;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+        }
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 1em;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h3 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        .list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .item p {
+            margin: 5px 0;
+        }
+        .item strong {
+            color: #333;
+        }
+        #message {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">🖥️ Kompyuter Yordam</div>
+    <nav>
+        <a href="/">Bosh sahifa</a>
+        <a href="/about.html">Biz haqimizda</a>
+        <a href="/order.html">Buyurtma</a>
+        <a href="/contact.html">Aloqa</a>
+        <a href="/profile.html">Profil</a>
+        <a href="/logout" id="logoutBtn">Chiqish</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Admin Paneli</h2>
+    <p id="message"></p>
+    <div class="section" id="ordersSection">
+        <h3>Buyurtmalar</h3>
+        <div id="ordersList" class="list"></div>
+    </div>
+    <div class="section" id="commentsSection">
+        <h3>Aloqa Xabarlari</h3>
+        <div id="commentsList" class="list"></div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Get email and password from localStorage
+        const email = localStorage.getItem("userEmail");
+        const password = localStorage.getItem("userPassword");
+
+        console.log("Admin log: Email o'qildi:", email ? email : "Yo'q");
+        console.log("Admin log: Parol o'qildi:", password ? "Mavjud" : "Yo'q");
+
+        if (!email || !password) {
+            console.log("Admin log: Email yoki parol yo'q. Login sahifasiga yo'naltirilmoqda");
+            window.location.href = "login.html";
+            return;
+        }
+
+        async function loadOrders() {
+            try {
+                console.log('Admin log: /admin/orders so\'rovi yuborilmoqda, email:', email);
+                const response = await fetch('/admin/orders', {
+                    method: 'GET',
+                    headers: {
+                        'Email': email,
+                        'Password': password,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log('Admin log: /admin/orders javobi:', response.status, response.statusText);
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({ message: 'Server javobi noto\'g\'ri' }));
+                    console.log('Admin error:', error);
+                    throw new Error(error.message || 'Buyurtmalarni yuklab bo\'lmadi');
+                }
+                const orders = await response.json();
+                console.log('Admin log: Buyurtmalar:', orders);
+                const ordersList = document.getElementById('ordersList');
+                ordersList.innerHTML = '';
+                if (orders.length === 0) {
+                    ordersList.innerHTML = '<p>Hozircha buyurtmalar yo\'q</p>';
+                    return;
+                }
+                orders.forEach(order => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.innerHTML = `
+                        <p><strong>Ism:</strong> ${order.name || 'Noma\'lum'}</p>
+                        <p><strong>Telefon:</strong> ${order.phone || 'Noma\'lum'}</p>
+                        <p><strong>Xizmat:</strong> ${order.service || 'Noma\'lum'}</p>
+                        <p><strong>Xabar:</strong> ${order.message || 'Yo\'q'}</p>
+                        <p><strong>Sana:</strong> ${order.date ? new Date(order.date).toLocaleString('uz-UZ') : 'Noma\'lum'}</p>
+                    `;
+                    ordersList.appendChild(item);
+                });
+            } catch (err) {
+                console.log('Admin error (catch):', err.message);
+                document.getElementById('message').textContent = 'Xato: ' + err.message;
+            }
+        }
+
+        async function loadComments() {
+            try {
+                console.log('Admin log: /admin/comments so\'rovi yuborilmoqda, email:', email);
+                const response = await fetch('/admin/comments', {
+                    method: 'GET',
+                    headers: {
+                        'Email': email,
+                        'Password': password,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log('Admin log: /admin/comments javobi:', response.status, response.statusText);
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({ message: 'Server javobi noto\'g\'ri' }));
+                    console.log('Admin error:', error);
+                    throw new Error(error.message || 'Xabarlarni yuklab bo\'lmadi');
+                }
+                const comments = await response.json();
+                console.log('Admin log: Aloqa xabarlari:', comments);
+                const commentsList = document.getElementById('commentsList');
+                commentsList.innerHTML = '';
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<p>Hozircha xabarlar yo\'q</p>';
+                    return;
+                }
+                comments.forEach(comment => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.innerHTML = `
+                        <p><strong>Ism:</strong> ${comment.name || 'Noma\'lum'}</p>
+                        <p><strong>Email:</strong> ${comment.email || 'Noma\'lum'}</p>
+                        <p><strong>Xabar:</strong> ${comment.message || 'Yo\'q'}</p>
+                        <p><strong>Sana:</strong> ${comment.date ? new Date(comment.date).toLocaleString('uz-UZ') : 'Noma\'lum'}</p>
+                    `;
+                    commentsList.appendChild(item);
+                });
+            } catch (err) {
+                console.log('Admin error (catch):', err.message);
+                document.getElementById('message').textContent = 'Xato: ' + err.message;
+            }
+        }
+
+        await loadOrders();
+        await loadComments();
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Admin log: Chiqish bosildi, email va parol o\'chirilmoqda');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userPassword');
+            window.location.href = '/login.html';
+        });
+    });
+</script>
+</body>
+</html>

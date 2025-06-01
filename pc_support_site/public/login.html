@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tizimga kirish</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .container1 {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: 50px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p a {
+      color: #00c6ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="index.html">Bosh sahifa</a></li>
+    <li><a href="about.html">Biz haqimizda</a></li>
+    <li><a href="order.html">Buyurtma</a></li>
+    <li><a href="contact.html">Bog'lanish</a></li>
+  </ul>
+</nav>
+
+<div class="container1">
+  <h2>Tizimga kirish</h2>
+  <form id="login-form">
+    <input type="email" name="email" id="email" placeholder="Email manzilingiz" required />
+    <input type="password" name="password" id="password" placeholder="Parolingiz" required />
+    <button type="submit">Kirish</button>
+  </form>
+  <p id="message"></p>
+  <p style="margin-top: 20px; text-align: center; color: #1e2a38">
+    Hisobingiz yo‘qmi? <a href="register.html">Ro‘yxatdan o‘ting</a>
+  </p>
+</div>
+
+<script>
+  document.getElementById("login-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userPassword", password);
+      localStorage.setItem("userRole", data.role);
+
+      if (data.role === "admin") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    } else {
+      document.getElementById("message").textContent = "Email yoki parol noto'g'ri";
+      document.getElementById("message").style.color = "red";
+    }
+  });
+</script>
+</body>
+</html>

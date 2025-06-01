@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kompyuter & Noutbuk Ta'mirlash — Premium Xizmat</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <div  class="logo">Dern <span>Support</span>
+            <div id="auth-buttons">
+                <a href="login.html" class="btn btn-primary">Kirish</a>
+                <a href="profile.html" class="btn btn-secondary">Profil</a>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">Bosh sahifa</a>
+            <a href="services.html">Xizmatlar</a>
+            <a href="about.html">Biz haqimizda</a>
+            <a href="contact.html">Aloqa</a>
+            <a href="order.html" class="btn btn-primary">Buyurtma</a>
+        </nav>
+
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container hero-content">
+        <h2>Kompyuteringizga <span>Hayot</span> Sovg‘a Qiling</h2>
+        <p>Tezkor diagnostika, ishonchli ta’minot va professional ustalar — barchasi bir joyda.</p>
+        <a href="order.html" class="btn btn-secondary">Buyurtma berish</a>
+    </div>
+</section>
+
+<section class="services">
+    <div class="container">
+        <h3>Xizmatlarimiz</h3>
+        <div class="cards">
+            <div class="card">
+                <img src="https://avatars.mds.yandex.net/get-ydo/3937212/2a00000178c9dd1c72abe40ff620ba6d86c3/diploma" alt="Diagnostika">
+                <h4>Tezkor Diagnostika</h4>
+                <p>Muammoni aniqlash va yechim taklif qilish 30 daqiqada.</p>
+            </div>
+            <div class="card">
+                <img src="https://img.freepik.com/premium-photo/virus-warning-alert-on-computer-screen-detected-modish-cyber-threat_31965-42086.jpg?size=626&ext=jpg" alt="Virus">
+                <h4>Viruslardan Tozalash</h4>
+                <p>Kompyuteringizni zararli dasturlardan tozalab, himoya qilamiz.</p>
+            </div>
+            <div class="card">
+                <img src="https://i.redd.it/z2kz3gojz9b01.jpg" alt="Ekran">
+                <h4>Ekran & Klaviatura</h4>
+                <p>Ekran, klaviatura hamda boshqa detallarni almashtirish.</p>
+            </div>
+            <div class="card">
+                <img src="https://i.ytimg.com/vi/_2K0A4dmd3U/maxresdefault.jpg" alt="SSD">
+                <h4>SSD/HDD O‘rnatish</h4>
+                <p>Tezkor drayverlar, ma’lumotlarni ko‘chirib o‘rnatish.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <h3>Mijozlarimiz Nima Deydi</h3>
+        <div class="slider">
+            <div class="slide active">
+                <p>“DernSupport.uz xizmatidan juda xursandman! Tezkor va sifatli ish — tavsiya qilaman.”</p>
+                <span>— Ali Abdullayev</span>
+            </div>
+            <div class="slide">
+                <p>“Ustalar juda bilimdon va hurmatli. Narxlari ham maqbul.”</p>
+                <span>— Nilufar Xasanova</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>&copy; 2025 DernSupport.uz — Barcha huquqlar himoyalangan.</p>
+    </div>
+</footer>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+    }, 5000);
+</script>
+</body>
+</html>
